@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الاتصال الآمن</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #f4f4f9; }
+        .btn { padding: 15px 30px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 18px; margin-top: 20px; display: inline-block;}
+    </style>
+</head>
+<body>
+
+    <h2>جاري تحضير الاتصال الآمن...</h2>
+    <p>إذا لم يفتح التطبيق تلقائياً، يرجى تحميله من المتجر أولاً.</p>
+
+    <a href="#" id="manualLink" class="btn">اضغط هنا لإضافة الاتصال</a>
+
+    <script>
+        // رابط الـ VLESS الخاص بك
+        var vlessLink = "vless://9665c510-57da-42d4-a533-764d16f9d88d@47.254.170.90:443?encryption=none&flow=xtls-rprx-vision&security=reality&sni=www.microsoft.com&fp=chrome&pbk=k8hh8_Dofqt3Eqyn4vmWkBDxkP1PIKu7weDJJB1XaxI&sid=6ba85179e30d4fc2&type=tcp&headerType=none#Tammam-VIP";
+        
+        // روابط المتاجر
+        var androidStore = "https://play.google.com/store/apps/details?id=com.v2ray.ang";
+        var iosStore = "https://apps.apple.com/app/v2box-v2ray-client/id6446814690";
+        var windowsStore = "https://github.com/MatsuriDayo/nekoray/releases"; // مثال لويندوز
+
+        // دالة لاكتشاف النظام
+        function getOS() {
+            var userAgent = window.navigator.userAgent || window.navigator.vendor || window.opera;
+            if (/android/i.test(userAgent)) { return "Android"; }
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) { return "iOS"; }
+            if (/Win/.test(userAgent)) { return "Windows"; }
+            return "Unknown";
+        }
+
+        var os = getOS();
+        var storeLink = "";
+
+        if (os === "Android") { storeLink = androidStore; }
+        else if (os === "iOS") { storeLink = iosStore; }
+        else if (os === "Windows") { storeLink = windowsStore; }
+
+        // إعداد الزر اليدوي
+        document.getElementById("manualLink").href = vlessLink;
+
+        // محاولة الفتح التلقائي والتوجيه
+        window.onload = function() {
+            // محاولة فتح التطبيق
+            window.location.replace(vlessLink);
+
+            // إذا لم يفتح التطبيق خلال ثانيتين، وجهه للمتجر
+            setTimeout(function() {
+                if(storeLink !== "") {
+                    window.location.replace(storeLink);
+                } else {
+                    alert("نظام التشغيل غير مدعوم أو غير معروف.");
+                }
+            }, 2500); 
+        };
+    </script>
+</body>
+</html>
